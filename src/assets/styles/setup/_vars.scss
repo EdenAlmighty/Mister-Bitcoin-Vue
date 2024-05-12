@@ -1,0 +1,18 @@
+$bg-clr: #fffafa;
+$txt-clr: rgb(15, 15, 15);
+
+$bg-clr-dark: #353943;
+$bg-clr-dark-brighter: #4F5360;
+$txt-clr-dark: white;
+
+$border-clr: #bababa;
+
+
+.dark {
+    background-color: $bg-clr-dark;
+    color: $txt-clr-dark;
+
+    .container {
+        background-color: $bg-clr-dark-brighter;
+    }
+}
