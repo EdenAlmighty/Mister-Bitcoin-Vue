@@ -26,6 +26,7 @@ export default {
         },
     },
     actions: {
+        
         async loadContacts({ commit }, filterBy) {
             try {
                 const contacts = await contactService.query(filterBy)
@@ -36,16 +37,16 @@ export default {
             }
         },
         //! NOT GOOD MUTATING STATE
-        async getById(state, contactId) {
-            try {
-                let contact = state.contacts.find(contact => contact._id === contactId)
-                // if (!contact) contact = await contactService.getById(contactId)
-                return contact
-            } catch (err) {
-                console.log(err);
-                throw `Couldn't get contact`
-            }
-        },
+        // async getById(state, contactId) {
+        //     try {
+        //         let contact = state.contacts.find(contact => contact._id === contactId)
+        //         // if (!contact) contact = await contactService.getById(contactId)
+        //         return contact
+        //     } catch (err) {
+        //         console.log(err);
+        //         throw `Couldn't get contact`
+        //     }
+        // },
         async saveContact({ commit }, contact) {
             try {
                 const savedContact = await contactService.save(contact)
