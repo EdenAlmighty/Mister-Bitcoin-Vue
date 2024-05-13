@@ -35,10 +35,11 @@ export default {
                 throw `Couldn't load contacts`
             }
         },
+        //! NOT GOOD MUTATING STATE
         async getById(state, contactId) {
             try {
                 let contact = state.contacts.find(contact => contact._id === contactId)
-                if (!contact) contact = await contactService.getById(contactId)
+                // if (!contact) contact = await contactService.getById(contactId)
                 return contact
             } catch (err) {
                 console.log(err);

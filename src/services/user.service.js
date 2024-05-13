@@ -117,9 +117,8 @@ async function addTransaction(loggedInUser, contact, amount) {
     console.log('updatedUser: ', updatedUser)
 
     _saveLocalUser(updatedUser)
-    await save(updatedUser);
+    await save(updatedUser)
 }
-
 
 function getEmptyUser() {
     return {
@@ -149,6 +148,7 @@ function _createUser(fullname, username, password, balance = 100) {
         fullname,
         username,
         password,
-        balance
+        balance,
+        imgUrl
     }
 }

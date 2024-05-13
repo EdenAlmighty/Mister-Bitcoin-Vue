@@ -174,7 +174,7 @@ function _createDefaultContacts() {
     ]
     return defaultContacts.map(contact => ({
         ...contact,
-        imgUrl: contact.imgUrl || 'https://robohash.org/' + utilService.getRandomInt(0, 50) + '?size=200x200&set=set5',
+        imgUrl: contact.imgUrl || 'https://robohash.org/' + contact._id + '?size=200x200&set=set5',
         balance: contact.balance || 100
     }));
 

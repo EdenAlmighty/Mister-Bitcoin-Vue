@@ -1,16 +1,23 @@
 import { contactService } from "@/services/contact.service"
 import { userService } from "@/services/user.service"
 
+
 export default {
     state() {
         return {
             loggedInUser: null,
-            users: []
+            users: [],
+            isAuth: false
         }
     },
     mutations: {
         setUser(state, loggedInUser) {
             state.loggedInUser = loggedInUser
+            if(state.loggedInUser !== null){
+                state.isAuth = true
+            } else {
+                state.isAuth = false
+            }
             console.log('state.loggedInUser: ', state.loggedInUser)
         }
     },
@@ -20,14 +27,14 @@ export default {
             const user = await userService.getSessionUser()
             console.log('user: ', user)
             if (user !== null) {
-                commit('setUser', user);
+                commit('setUser', user)
             } else {
-                commit('setUser', null);
+                commit('setUser', null)
             }
         },
         async login({ commit, state }, creds) {
             try {
-                console.log(creds);
+                console.log(creds)
                 const user = await userService.login(creds)
                 if (user) {
                     commit('setUser', user)
@@ -40,7 +47,7 @@ export default {
         },
         async signup({ commit, state }, creds) {
             try {
-                console.log(creds);
+                console.log(creds)
                 const user = await userService.signup(creds)
                 if (user) {
                     commit('setUser', user)
@@ -62,34 +69,34 @@ export default {
         },
         async transferFunds({ commit, dispatch }, { contactId, funds }) {
             try {
-                const user = await userService.getSessionUser();
+                const user = await userService.getSessionUser()
                 if (!user) {
-                    throw new Error('User not found');
+                    throw new Error('User not found')
                 }
 
                 if (funds > user.balance) {
-                    throw new Error('Insufficient funds');
+                    throw new Error('Insufficient funds')
                 }
 
-                const userToTransfer = await contactService.getById(contactId);
+                const userToTransfer = await contactService.getById(contactId)
                 if (!userToTransfer) {
-                    throw new Error('Contact not found');
+                    throw new Error('Contact not found')
                 }
 
-                user.balance -= funds;
-                userToTransfer.balance += funds;
+                user.balance -= funds
+                userToTransfer.balance += funds
 
                 await Promise.all([
                     userService.addTransaction(user, userToTransfer, funds),
                     contactService.save(userToTransfer)
                 ])
 
-                commit('setUser', user);
+                commit('setUser', user)
 
-                return 'Transfer successful!';
+                return 'Transfer successful!'
             } catch (err) {
-                console.error('Error transferring funds:', err);
-                throw err;
+                console.error('Error transferring funds:', err)
+                throw err
             }
         }
     },

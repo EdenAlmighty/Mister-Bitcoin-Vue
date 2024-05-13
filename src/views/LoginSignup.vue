@@ -3,8 +3,8 @@
 
   <button v-if="!loggedInUser" @click="isLogin = !isLogin" class="btn">New account</button>
   <form v-if="!loggedInUser && isLogin" @submit.prevent="handleSubmit" class="contact-edit">
-    <input v-model="creds.username" type="text" placeholder="Username" />
-    <input v-model="creds.password" type="password" placeholder="Password" />
+    <input v-model="creds.username" type="text" placeholder="admin " />
+    <input v-model="creds.password" type="password" placeholder="admin" />
     <button class="btn">Login</button>
   </form>
   <form v-else-if="!loggedInUser && !isLogin" @submit.prevent="handleSubmit" class="contact-edit">
@@ -44,6 +44,7 @@
           showErrorMsg('Failed to login. Please check your credentials.')
           console.error('Error logging in:', err)
         }
+        this.creds = { username: '', password: '', fullname: '' };
       },
       async handleLogout() {
         try {

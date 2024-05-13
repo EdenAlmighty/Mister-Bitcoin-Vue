@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { contactService } from '@/services/contact.service';
 import { showErrorMsg, showSuccessMsg } from '@/services/event-bus.service'
 
 export default {
@@ -30,9 +31,10 @@ export default {
     async created() {
         const { contactId } = this.$route.params
         if (contactId) {
-            this.contact = await this.$store.dispatch('getById', contactId)
+            // this.contact = await this.$store.dispatch('getById', contactId)
+            this.contact = await contactService.getById(contactId)
         } else {
-            this.contact = this.$store.getters.getEmptyContact
+            this.contact = await contactService.getEmptyContact()
         }
     }
 }

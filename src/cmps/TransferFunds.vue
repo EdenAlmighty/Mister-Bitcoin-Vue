@@ -43,5 +43,9 @@ import { showErrorMsg, showSuccessMsg } from '@/services/event-bus.service'
   </script>
   
   <style>
+
+  input{
+    
+  }
   </style>
   

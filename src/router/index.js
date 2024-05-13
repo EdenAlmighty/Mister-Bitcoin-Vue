@@ -1,18 +1,14 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import ContactIndex from '@/views/ContactIndex.vue'
 import ContactDetails from '@/views/ContactDetails.vue'
 import ContactEdit from '@/views/ContactEdit.vue'
 import StatisticsPage from '@/views/StatisticsPage.vue'
+import store from '@/store/store'
 // import LoginSignup from '@/views/LoginSignup.vue'
 
-
-// router.beforeEach((to, from, next) => {
-//     if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
-//     else next()
-// })
 const routerOptions = {
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHashHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/',
@@ -23,6 +19,7 @@ const routerOptions = {
             path: '/contact',
             name: 'contact',
             component: ContactIndex,
+            meta: {requiresAuth: true}
 
         },
         {
@@ -49,4 +46,15 @@ const routerOptions = {
 }
 const router = createRouter(routerOptions)
 
-export default router;
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+    const exists = router.getRoutes().some(route => route.name === to.name)
+
+    console.log('store.state.isAuth: ',store.state.user.isAuth )
+    if (requiresAuth && !store.state.user.isAuth || !exists) {
+        next({ name: 'home' })
+    } else {
+        next()
+    }
+})
+export default router
