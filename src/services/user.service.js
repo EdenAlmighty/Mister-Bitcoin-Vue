@@ -25,7 +25,6 @@ async function query() {
         console.log('users: ', users)
         if (!users || !users.length) {
             users = _createDefaultUsers()
-            await dbService.insert(KEY, users)
         }
         return users
     } catch (err) {
@@ -53,11 +52,12 @@ async function save(user) {
 
 async function login(userCred) {
     try {
-        const users = await storageService.query('user')
+        const users = await query()
+        console.log('users: ', users)
         const user = users.find(user => user.username === userCred.username)
         if (user) {
-             _saveLocalUser(user)
-             return user
+            _saveLocalUser(user)
+            return user
         }
     } catch (err) {
         throw err
@@ -132,9 +132,11 @@ function getEmptyUser() {
 }
 
 function _saveLocalUser(user) {
-    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
-    return user
+    const { password, ...userWithoutPassword } = user;
+    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(userWithoutPassword));
+    return userWithoutPassword
 }
+
 
 function _createDefaultUsers() {
     return [
@@ -143,7 +145,7 @@ function _createDefaultUsers() {
     ]
 }
 
-function _createUser(fullname, username, password, balance = 100) {
+function _createUser(fullname, username, password, balance = 100, imgUrl = '') {
     return {
         fullname,
         username,
